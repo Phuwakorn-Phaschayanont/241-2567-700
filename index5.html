@@ -42,40 +42,20 @@
           .gender {
                display: row-reverse;
           }
-          .container {
-               display: flex;
-          }
-          .item-left {
-               background-color: red;
-               flex: 1;
-          }
-          .item-right {
-               background-color: blue;
-               flex: 2;
-          }
-          .grid-container {
-               display: grid;
-               grid-template-columns: 1fr 2fr;
-          }
-          .item-1,.item-3 {
-               background-color: blue;
+          .image {
+               background-image: url("https://fastly.picsum.photos/id/153/200/300.jpg?grayscale&hmac=JqisyFSqgCMVQG47JaISqrnW9zPXBXPLla-fxkK6HCY");
+               height: 200px;
+               width: 100px;
+               background-size: contain;
+               background-position: top left;
+               background-repeat: no-repeat;
           }
      </style>
 </head>
 
 <body>
      <!-- form -->
-     <div class="container">
-          <div class="item-left">Left</div>
-          <div class="item-right">Right</div>
-     </div>
-
-     <div class="grid-container">
-          <div class="grid-item item-1">item 1</div>
-          <div class="grid-item item-2">item 2</div>
-          <div class="grid-item item-3">item 3</div>
-          <div class="grid-item item-4">item 4</div>
-     </div>
+     <div class="image">ทดสอบ</div>
 
      <div id="register"> Register form</div>
      <span class="header-form">ชื่อ</span>

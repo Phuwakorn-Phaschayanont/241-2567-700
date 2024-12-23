@@ -42,39 +42,22 @@
           .gender {
                display: row-reverse;
           }
-          .container {
-               display: flex;
+          .left {
+               float: left;
           }
-          .item-left {
-               background-color: red;
-               flex: 1;
-          }
-          .item-right {
-               background-color: blue;
-               flex: 2;
-          }
-          .grid-container {
-               display: grid;
-               grid-template-columns: 1fr 2fr;
-          }
-          .item-1,.item-3 {
-               background-color: blue;
+          .right {
+               float: right;
           }
      </style>
 </head>
 
 <body>
      <!-- form -->
-     <div class="container">
-          <div class="item-left">Left</div>
-          <div class="item-right">Right</div>
+     <div class="left">
+          <img src="https://fastly.picsum.photos/id/153/200/300.jpg?grayscale&hmac=JqisyFSqgCMVQG47JaISqrnW9zPXBXPLla-fxkK6HCY">
      </div>
-
-     <div class="grid-container">
-          <div class="grid-item item-1">item 1</div>
-          <div class="grid-item item-2">item 2</div>
-          <div class="grid-item item-3">item 3</div>
-          <div class="grid-item item-4">item 4</div>
+     <div class="left">
+          Test
      </div>
 
      <div id="register"> Register form</div>
