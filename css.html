@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+          <style>
+                    .container {
+                              background-color: red;
+                    }
+                    /*Computer first*/
+                    @media screen and (max-width: 768px) {
+                              .container {
+                                        flex-direction: column;
+                              }
+                    }
+                    .container {
+                              display: flex;
+                    }
+                    .container .item {
+                              padding: 10px;
+                              flex: 1;
+                    }
+                    .grid-container {
+                              display: grid;
+                              grid-template-columns: 1fr 1fr 1fr;
+                    }
+                    .grid-container .item {
+                              padding: 10px;
+                              background-color: yellow;
+                              flex: 1;
+                    }
+                    /*Tablet first*/
+                    @media screen and (max-width: 768px) {
+                              .grid-container {
+                                        grid-template-columns: 1fr 1fr;
+                              }
+                              
+                    }
+                    /*Mobile first*/
+                    @media screen and (max-width: 640px) {
+                              .grid-container {
+                                        grid-template-columns: 1fr;
+                              }
+                              
+                    }
+          </style>
+</head>
+<body>
+          <div class="container">
+                    hello world breakpoint
+          </div>
+          <picture>
+                    <source media="(max-width: 768px)" srcset= "https://picsum.photos/200/300?grayscale">
+                    <img src="https://picsum.photos/id/237/200/300">
+          </picture>
+          <div class="container">
+                    <div class="item">Item1</div>
+                    <div class="item">Item2</div>
+          </div>
+          <div class="grid-container">
+                    <div class="item">Item1</div>
+                    <div class="item">Item2</div>
+                    <div class="item">Item3</div>
+                    <div class="item">Item4</div>
+                    <div class="item">Item5</div>
+                    <div class="item">Item6</div>
+          </div>
+          
+</body>
+</html>

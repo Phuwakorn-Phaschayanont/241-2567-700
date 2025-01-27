@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+</head>
+<body>
+          ชื่อ <input type="text" name="firstname" onkeydown="changeFirstName()">
+
+          <div onmouseover="overitem()" onmouseup="upitem()" onmousedown="downitem()"> click here</div>
+          <script>
+                  function changeFirstName() {
+                  //เลือกไปยัง input firstname
+                          let firstnameDOM = document.querySelector('input[name=firstname]')
+                  //เอา value ของ firstname ออกมา
+                          console.log('change firstname' , firstnameDOM.value)
+                  }
+                  function overitem() {
+                    console.log('mouse over')
+                  }
+                  function upitem() {
+                    console.log('mouse up')
+                  }
+                  function downitem() {
+                    console.log('mouse down')
+                  }
+          </script>
+</body>
+
+</html>
