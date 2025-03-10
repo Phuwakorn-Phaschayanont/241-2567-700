@@ -1,49 +1,99 @@
 
-const validatedata = (userdata) => {
+const BASE_URL = 'http://localhost:8000'
+let mode = 'CREATE' // default mode
+let selectedId = ''
+
+window.onload = async () => {
+          const urlParams = new URLSearchParams(window.location.search);
+          const id = urlParams.get('id')
+          console.log(id)
+          if (id) {
+                    mode = 'EDIT'
+                    selectedId = id
+
+                    // 1. ดึงข้อมูล user ที่ต้องการ edit
+                    try {
+                              const response = await axios.get(`${BASE_URL}/users/${id}`)
+                              const user = response.data
+
+                              // 2. เราจะนำช้อมูลของ user ที่ดึงมา ใส่ใน input ที่เรามี
+                              let firstnameDOM = document.querySelector('input[name=firstname]')
+                              let lastnameDOM = document.querySelector('input[name=lastname]')
+                              let ageDOM = document.querySelector('input[name=age]')
+                              let descriptionDOM = document.querySelector('textarea[name=description]')
+
+                              firstnameDOM.value = user.firstname
+                              lastnameDOM.value = user.lastname
+                              ageDOM.value = user.age
+                              descriptionDOM.value = user.description
+
+                              let genderDOMs = document.querySelectorAll('input[name=gender]')
+                              let interestDOMs = document.querySelectorAll('input[name=interest]')
+
+                              for (let i = 0; i < genderDOMs.length; i++) {
+                                        if (genderDOMs[i].value == user.gender) {
+                                                  genderDOMs[i].checked = true
+                                        }
+                              }
+                              for (let i = 0; i < interestDOMs.length; i++) {
+                                        if (user.interests.includes(interestDOMs[i].value)) {
+                                                  interestDOMs[i].checked = true
+                                        }
+                              }
+
+                    } catch (err) {
+                              console.log('error', err)
+                    }
+          }
+}
+
+
+
+const validateData = (userData) => {
           let errors = []
 
-          if (!userdata.firstName) {
+          if (!userData.firstname) {
                     errors.push('กรุณากรอกชื่อ')
           }
-          if (!userdata.lastName) {
+          if (!userData.lastname) {
                     errors.push('กรุณากรอกนามสกุล')
           }
-          if (!userdata.age) {
+          if (!userData.age) {
                     errors.push('กรุณากรอกอายุ')
           }
-          if (!userdata.gender) {
+          if (!userData.gender) {
                     errors.push('กรุณาเลือกเพศ')
           }
-          if (!userdata.description) {
-                    errors.push('กรุณากรอกคำอธิบาย')
-          }
-          if (!userdata.interests) {
+          if (!userData.interests) {
                     errors.push('กรุณาเลือกความสนใจ')
+          }
+          if (!userData.description) {
+                    errors.push('กรุณากรอกคำอธิบาย')
           }
           return errors
 }
+
 const submitData = async () => {
-          let firstNameDOM = document.querySelector('input[name=firstname]');
-          let lastNameDOM = document.querySelector('input[name=lastname]');
+          let firstnameDOM = document.querySelector('input[name=firstname]');
+          let lastnameDOM = document.querySelector('input[name=lastname]');
           let ageDOM = document.querySelector('input[name=age]');
           let genderDOM = document.querySelector('input[name=gender]:checked') || {}
-          let interestDOMs = document.querySelectorAll('input[name=interest]:checked') || {}
+          let interestDOM = document.querySelectorAll('input[name=interest]:checked') || {}
           let descriptionDOM = document.querySelector('textarea[name=description]');
-
           let messageDOM = document.getElementById('message');
 
           try {
                     let interest = ''
-                    for (let i = 0; i < interestDOMs.length; i++) {
-                              interest += interestDOMs[i].value
-                              if (i != interestDOMs.length - 1) {
-                                        interest += ', '
+                    for (let i = 0; i < interestDOM.length; i++) {
+                              interest += interestDOM[i].value;
+                              if (i != interestDOM.length - 1) {
+                                        interest += ', ';
                               }
                     }
 
                     let userData = {
-                              firstName: firstNameDOM.value,
-                              lastName: lastNameDOM.value,
+                              firstname: firstnameDOM.value,
+                              lastname: lastnameDOM.value,
                               age: ageDOM.value,
                               gender: genderDOM.value,
                               description: descriptionDOM.value,
@@ -53,37 +103,48 @@ const submitData = async () => {
                     console.log('submitData', userData);
 
                     /*
-                    const errors = validatedata(userData);
-                    if (errors.length > 0) {
-                              //มี error
-                              throw {
-                                        message: 'กรุณากรอกข้อมูลให้ครบถ้วน',
-                                        errors: errors
-                              }
-                    }
+                            const errors = validateData(userData)
+                            if (errors.length > 0) {
+                                // มี error
+                                throw {
+                                    message: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+                                    errors: errors 
+                                }
+                        
+                            }
                     */
-                    const response = await axios.post('http://localhost:8000/users', userData);
-                    console.log('response', response.data);
-                    messageDOM.innerText = 'บันทึกข้อมูลเรียบร้อยแล้ว'
-                    messageDOM.className = 'message success'
+                    let message = 'บันทึกข้อมูลเรียบร้อย'
+                    if (mode == 'CREATE') {
+                              const response = await axios.post(`${BASE_URL}/users`, userData);
+                              console.log('response:', response.data);
+                    } else {
+                              const response = await axios.put(`${BASE_URL}/user/${selectedId}`, userData);
+                              message = 'แก้ไขข้อมูลเรียบร้อย'
+                              console.log('response:', response.data);
+                    }
+
+                    messageDOM.innerText = message
+                    messageDOM.className = 'message success';
           } catch (err) {
                     console.log('error message', err.message);
                     console.log('error', err.errors);
+
                     if (err.response) {
-                              console.log('error.response', err.response.data.message);
-                              err.message = err.response.data.message
-                              err.errors = err.response.data.errors
+                              console.log('error:', err.response.data.message)
+                              error.message = err.response.data.message
+                              error.errors = err.response.data.errors
                     }
 
                     let htmlData = '<div>'
-                    htmlData += `<div> ${err.message} </div>`
+                    htmlData += `<div> ${err.message} </div>`;
                     htmlData += '<ul>'
                     for (let i = 0; i < err.errors.length; i++) {
-                              htmlData += `<li> ${err.errors[i]} </li>`
+                              htmlData += `<li> ${err.errors[i]} </li>`;
                     }
                     htmlData += '</ul>'
                     htmlData += '</div>'
+
                     messageDOM.innerHTML = htmlData
-                    messageDOM.className = 'message danger'
+                    messageDOM.className = 'message danger';
           }
 }
